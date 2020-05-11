@@ -64,6 +64,16 @@ display_weather()
 	fi
 }
 
+check_online_and_display()
+{
+    wget -q --spider http://google.com
+    if [ $? -eq 0 ]; then
+    	echo "$(display_weather) $city, $(get_region_code)"
+    else
+        echo "Location Unavailable"
+    fi
+}
+
 main()
 {
 	# don't run the rest of the script unless we can safely get all the information
@@ -74,11 +84,11 @@ main()
 		exit
 	fi
 	# process should be cancelled when session is killed
-	if ping -q -c 1 -W 1 ipinfo.io &>/dev/null; then
-		echo "$(display_weather) $city, $(get_region_code)"
-	else
-		echo "Location Unavailable"
-	fi
+	#if ping -q -c 1 -W 1 ipinfo.io &>/dev/null; then
+	#else
+	#	echo "Location Unavailable"
+	#fi
+    check_online_and_display
 }
 
 #run main driver program

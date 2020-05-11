@@ -18,7 +18,7 @@ main()
 
   # set configuration option variables
   show_battery=$(get_tmux_option "@dracula-show-battery" true)
-  show_network=$(get_tmux_option "@dracula-show-network" true)
+  show_network=$(get_tmux_option "@dracula-show-network" false)
   show_weather=$(get_tmux_option "@dracula-show-weather" true)
   show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
 
@@ -61,7 +61,7 @@ main()
   tmux set-option -g status-style "bg=${gray},fg=${white}"
 
   tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ☺ " 
-
+ 
   tmux set-option -g  status-right ""
 
   if $show_battery; then
