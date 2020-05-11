@@ -36,9 +36,13 @@ main()
 {
 	network="Offline"
 	for host in $HOSTS; do
-	    if ping -q -c 1 -W 1 $host &>/dev/null; then
+	    #if ping -q -c 1 -W 1 $host &>/dev/null; then
+        wget -q --spider http://google.com
+        if [ $? -eq 0 ]; then
 		    network="$(get_ssid)"
 		    break
+        else
+            echo "Offline"
 	    fi
 	done
 
