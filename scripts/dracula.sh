@@ -17,10 +17,18 @@ main()
   current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
   # set configuration option variables
-  show_battery=$(get_tmux_option "@dracula-show-battery" true)
-  show_network=$(get_tmux_option "@dracula-show-network" false)
-  show_weather=$(get_tmux_option "@dracula-show-weather" true)
-  show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
+  if [ "$SSH_CONNECTION" ]; then
+      show_battery=$(get_tmux_option "@dracula-show-battery" false)
+      show_network=$(get_tmux_option "@dracula-show-network" false)
+      show_weather=$(get_tmux_option "@dracula-show-weather" false)
+      show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
+  else
+      show_battery=$(get_tmux_option "@dracula-show-battery" true)
+      show_network=$(get_tmux_option "@dracula-show-network" false)
+      show_weather=$(get_tmux_option "@dracula-show-weather" true)
+      show_fahrenheit=$(get_tmux_option "@dracula-show-fahrenheit" true)
+  fi
+
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -60,7 +68,12 @@ main()
   # status bar
   tmux set-option -g status-style "bg=${gray},fg=${white}"
 
-  tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ☺ " 
+  if [ "$SSH_CONNECTION" ]; then
+      tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} @${HOSTNAME} " 
+      tmux set-option -g status-position top
+  else
+      tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ☺ " 
+  fi
  
   tmux set-option -g  status-right ""
 
